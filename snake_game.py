@@ -1,10 +1,11 @@
+# coding=utf-8
 from tkinter import *
 import random
 
 snake = []
 snake_len = 1  # スタート時のヘビの長さ
 block_size = 20  # ブロックのサイズ
-#snake_color1, snake_color2 = "purple", "red"  # ヘビの色
+snake_color = "red"  # ヘビの色
 food = {"x1":0, "x2":0, "y1":0, "y2":0}  # 餌の座標
 food_color = "green"  # 餌の色
 drt = ""  # 進行方向
@@ -22,7 +23,8 @@ cv.pack()
 
 def start_game():  # ゲームの初期化
     global food, snake_len, drt, t, is_gameover
-    snake.clear()  # snake配列を空にする
+    # snake.clear()  # snake配列を空にする
+    del snake[:]
     drt = ""  # 進行方向を初期化
     t = T  # 速さを初期化
     # ヘビを生成
@@ -46,19 +48,19 @@ def draw_object():  # オブジェクトを描画
         #snake_color = snake_color1 if i%2 == 0 else snake_color2
         #c = i if int(i/16)%2 == 0 else 15-i
         #snake_color = "#" + str(format(c%16,'x')) + "0" + str(format(15-c%16,'x'))
-        if int(i/16)%3 == 0:
-            r = str(format(15-i%16,'x'))
-            g = str(format(i%16,'x'))
-            b = "0"
-        elif int(i/16)%3 == 1:
-            r = "0"
-            g = str(format(15-i%16,'x'))
-            b = str(format(i%16,'x'))
-        else:
-            r = str(format(i%16,'x'))
-            g = "0"
-            b = str(format(15-i%16,'x'))
-        snake_color = "#" + r + g + b
+        # if int(i/16)%3 == 0:
+        #     r = str(format(15-i%16,'x'))
+        #     g = str(format(i%16,'x'))
+        #     b = "0"
+        # elif int(i/16)%3 == 1:
+        #     r = "0"
+        #     g = str(format(15-i%16,'x'))
+        #     b = str(format(i%16,'x'))
+        # else:
+        #     r = str(format(i%16,'x'))
+        #     g = "0"
+        #     b = str(format(15-i%16,'x'))
+        # snake_color = "#" + r + g + b
         cv.create_rectangle(snake[i][0], snake[i][1], snake[i][2], snake[i][3], fill=snake_color, width=0)  # ヘビを描画
     cv.create_rectangle(food["x1"], food["y1"], food["x2"], food["y2"], fill=food_color, width=0)  # 餌を描画
 
@@ -95,7 +97,8 @@ def move_snake():  # ヘビの移動,餌を食べたか判定,ゲームオーバ
         if random.randint(0, 100) <= per: t -= a  # per/100の確立でヘビが加速
     win.title("LENGTH of SNAKE = " + str(len(snake)))  # ウィンドウのタイトルにヘビの長さを表示
     # ゲームオーバー？
-    if snake[0][0] <= 0 or snake[0][0] >= w-block_size or snake[0][1] <= 0 or snake[0][1] >= h-block_size: is_gameover = True  # 枠外？
+    if snake[0][0] <= 0 or snake[0][0] >= w-block_size or snake[0][1] <= 0 or snake[0][1] >= h-block_size:
+        is_gameover = True  # 枠外？
     for i in range(1,len(snake)):
         if snake[0][0] == snake[i][0] and snake[0][1] == snake[i][1]:  # 体に衝突?
             is_gameover = True
